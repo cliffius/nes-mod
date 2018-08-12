@@ -3,7 +3,7 @@ import serial
 import time
 from PIL import Image
 
-ser = serial.Serial('/dev/serial0', 9600)
+ser = serial.Serial('/dev/serial0', 115200)
 EndCom = "\xff\xff\xff"
 
 def noBoxArt():
@@ -65,3 +65,4 @@ else:
 
    time.sleep(1)
    ser.close()
+
