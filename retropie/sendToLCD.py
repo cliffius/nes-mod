@@ -45,19 +45,29 @@ else:
    ser.write('cls 0' + EndCom) # clear screen
 
    # get image file name
-   loc = "/opt/retropie/configs/all/emulationstation/downloaded_images/" + sys.argv[1] + "/"
-   art = sys.argv[3][:-4] + "-image.jpg" # :-4 removes '.zip' from end of string
-   size = 320, 240
-   try: # try to get boxart
-      cover_art = Image.open(loc + art)
-      #cover_art = cover_art_orig.thumbnail(size)
+   lcd_size = (320, 240)
+   path = "/opt/retropie/configs/all/emulationstation/downloaded_images/" + sys.argv[1] + "/"
+   file_img = sys.argv[3][:-4] + "-image.jpg" # :-4 removes '.zip' from end of string
+
+   try:
+      # load original boxart and resize into thumbnail
+      art_orig = Image.open(path + file_img)
+      art_orig.thumbnail(lcd_size, Image.ANTIALIAS)
+      thumb_size = art_orig.size
+
+      # create empty image of lcd size and paste thumbnail in center
+      cover_art = Image.new("RGB", lcd_size) #defaults to black
+      cover_art.paste(art_orig, ((lcd_size[0]-thumb_size[0])/2,
+                                 (lcd_size[1]-thumb_size[1])/2))
+      cover_w, cover_h = cover_art.size
+
    except: # if no box art, load text only
       noBoxArt()
 
    # loop through image one pixel at a time
-   pixel_skip = 2
-   for y in range(0, 240, pixel_skip): # screen height
-      for x in range(0, 320, pixel_skip): # screen width
+   pixel_skip = 4
+   for y in range(0, cover_h, pixel_skip):
+      for x in range(0, cover_w, pixel_skip):
          rgb = cover_art.getpixel((x,y)) # get current pixel
          pix_color = get565(rgb) # convert to 565 decimal
          draw_string = 'fill ' + str(x) + ',' + str(y) + ',' + str(pixel_skip) + ',' + str(pixel_skip) + ',' + str(pix_color)
@@ -65,4 +75,3 @@ else:
 
    time.sleep(1)
    ser.close()
-
