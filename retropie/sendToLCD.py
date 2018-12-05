@@ -5,6 +5,7 @@ from PIL import Image
 
 ser = serial.Serial('/dev/serial0', 115200)
 EndCom = "\xff\xff\xff"
+scraperPath = "/opt/retropie/configs/all/emulationstation/downloaded_images/"
 
 def noBoxArt():
    if sys.argv[1] == "gb":
@@ -46,7 +47,7 @@ else:
 
    # get image file name
    lcd_size = (320, 240)
-   path = "/opt/retropie/configs/all/emulationstation/downloaded_images/" + sys.argv[1] + "/"
+   path = scraperPath + sys.argv[1] + "/"
    file_img = sys.argv[3][:-4] + "-image.jpg" # :-4 removes '.zip' from end of string
 
    try:
