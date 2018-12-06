@@ -2,10 +2,14 @@ import sys
 import serial
 import time
 from PIL import Image
+#import logging
 
 ser = serial.Serial('/dev/serial0', 115200)
 EndCom = "\xff\xff\xff"
-scraperPath = "/opt/retropie/configs/all/emulationstation/downloaded_images/"
+scraperPath = "/home/pi/RetroPie/roms/" + sys.argv[1] + "/images/"
+
+#logging.basicConfig(filename='example.log', level=logging.DEBUG)
+#logging.info(scraperPath)
 
 def noBoxArt():
    if sys.argv[1] == "gb":
@@ -47,12 +51,11 @@ else:
 
    # get image file name
    lcd_size = (320, 240)
-   path = scraperPath + sys.argv[1] + "/"
    file_img = sys.argv[3][:-4] + "-image.jpg" # :-4 removes '.zip' from end of string
 
    try:
       # load original boxart and resize into thumbnail
-      art_orig = Image.open(path + file_img)
+      art_orig = Image.open(scraperPath + file_img)
       art_orig.thumbnail(lcd_size, Image.ANTIALIAS)
       thumb_size = art_orig.size
 
