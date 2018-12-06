@@ -69,7 +69,7 @@ else:
       noBoxArt()
 
    # loop through image one pixel at a time
-   pixel_skip = 4
+   pixel_skip = 2
    for y in range(0, cover_h, pixel_skip):
       for x in range(0, cover_w, pixel_skip):
          rgb = cover_art.getpixel((x,y)) # get current pixel
